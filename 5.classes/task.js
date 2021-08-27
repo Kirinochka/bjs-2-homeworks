@@ -113,6 +113,10 @@ class Student {
   }
 
   addMark = (mark, subject) => {
+    if (mark < 0 || mark > 5) {
+      console.log("Ошибка, оценка должна быть числом от 1 до 5");
+      return;
+    }
     if (!this.subjects[subject]) {
       this.subjects[subject] = [];
       this.subjects[subject].push(mark);
@@ -122,6 +126,7 @@ class Student {
   };
 
   getAverageBySubject = (subject) => {
+    if (!this.subjects[subject]) return
     const sum = this.subjects[subject].reduce((acc, curr) => acc + curr, 0);
     return sum / this.subjects[subject].length;
   };
@@ -134,15 +139,23 @@ class Student {
     let sum = marks.reduce((acc, curr) => acc + curr, 0);
     return sum / marks.length;
   };
+
+  exclude(reason) {
+    this.excluded = reason;
+    delete this.marks;
+    delete this.subject;
+  }
 }
 
-let student = new Student('adf')
+let student = new Student("adf");
 
 student.addMark(5, "algebra");
 student.addMark(5, "algebra");
 student.addMark(5, "geometry");
 student.addMark(4, "geometry");
 student.addMark(6, "geometry");
-student.getAverage()
+console.log(student.getAverageBySubject("geometry"));
+student.getAverageBySubject("biology");
+student.exclude("Исключен за попытку подделать оценки");
 
-console.log(student.getAverage())
+console.log(student.getAverage());
